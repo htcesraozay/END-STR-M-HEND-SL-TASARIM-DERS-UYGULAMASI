@@ -1,0 +1,877 @@
+Private Sub CommandButton1_Click()
+'BURADA GİRİLEN YARIMAMÜLÜN HANGİ SINIFA AİT OLDUĞU, DEPODA BULUNMA ORANI VE ABC ANALİZİ HESAPLANMIŞTIR.
+If YARIMAMUL.Text = "" Then
+MsgBox "Lütfen ABC analizi yapılacak yarı mamulü seçiniz.", vbCritical, "UYARI"
+Else
+Dim sınıf As String
+Dim yuzde1
+Dim yuzde2
+sınıf = Application.WorksheetFunction.VLookup(YARIMAMUL, Sheets("YARIMAMÜLLERİN AYLARA GÖRE SM").Range("C:V"), 20, 0)
+yuzde1 = Round(Application.WorksheetFunction.VLookup(YARIMAMUL, Sheets("YARIMAMÜLLERİN AYLARA GÖRE SM").Range("C:V"), 18, 0) * 100, 1)
+yuzde2 = Round(Application.WorksheetFunction.VLookup(YARIMAMUL, Sheets("YARIMAMÜLLERİN AYLARA GÖRE SM").Range("C:V"), 19, 0) * 100, 1)
+MsgBox "Yarımamülün ABC Analizi" & Chr(10) & "Depoda bulunma oranı: %" & yuzde1 & Chr(10) & "ABC Analizine Göre Bulunduğu Yüzdelik Dilim: %" & yuzde2 & Chr(10) & "Yarımamül " & sınıf & " sınıfındadır."
+End If
+End Sub
+
+Private Sub CommandButton10_Click()
+'BURADA ABC ANALİZİ ÇIKMAKTADIR
+abcbilgi.Show
+End Sub
+
+Private Sub UserForm_Initialize()
+'BURADA YARIMAMÜL KODLARI COMBOBOXA SIRALANMIŞTIR
+Dim a As Integer
+a = Sayfa5.Range("AI" & Rows.count).End(xlUp).Row
+YARIMAMUL.RowSource = "'VERİLER'!AI2:AI185"
+End Sub
+
+
+Private Sub CommandButton3_Click()
+abcgrafik.Show
+End Sub
+
+Private Sub CommandButton8_Click()
+Unload Me
+anasayfaa.Show
+End Sub
+
+Private Sub CommandButton9_Click()
+Unload Me
+RAPORLAMA.Show
+End Sub
+
+Private Sub CommandButton8_Click()
+Unload Me
+anasayfaa.Show 
+End Sub
+
+Private Sub CommandButton9_Click()
+Unload Me
+End Sub
+
+Private Sub UserForm_Activate()
+Dim gr As Chart
+Dim dosya As String
+Set gr = Sheets("Pareto ABC").ChartObjects(1).Chart
+dosya = ThisWorkbook.Path & Application.PathSeparator & "grafik.jpg"
+gr.Export Filename:=dosya, filtername:="jpg"
+Image1.Picture = LoadPicture(dosya)
+End Sub
+
+Private Sub CommandButton1_Click()
+Unload Me
+YARIMAMULTANIMLAMA.Show
+End Sub
+
+Private Sub CommandButton11_Click()
+anasayfabilgi.Show
+End Sub
+
+Private Sub CommandButton2_Click()
+Unload Me
+GIRISCIKIS.Show
+End Sub
+
+Private Sub CommandButton3_Click()
+Unload Me
+urunbilgi.Show
+End Sub
+
+Private Sub CommandButton4_Click()
+Unload Me
+RAPORLAMA.Show
+End Sub
+
+Private Sub CommandButton5_Click()
+Unload Me
+emniyetstogu.Show
+End Sub
+
+Private Sub CommandButton6_Click()
+Unload Me
+BİLGİ.Show
+End Sub
+
+
+Private Sub CommandButton9_Click()
+Unload Me
+Application.Visible = True
+End Sub
+
+
+Private Sub UserForm_QueryClose(Cancel As Integer, CloseMode As Integer)
+'Application.Visible = True
+End Sub
+
+Private Sub Image1_BeforeDragOver(ByVal Cancel As MSForms.ReturnBoolean, ByVal Data As MSForms.DataObject, ByVal X As Single, ByVal Y As Single, ByVal DragState As MSForms.fmDragState, ByVal Effect As MSForms.ReturnEffect, ByVal Shift As Integer)
+dosya = ThisWorkbook.Path & Application.PathSeparator & "grafik.jpg"
+gr.Export Filename:=dosya, filtername:="jpg"
+Image1.Picture = LoadPicture(dosya)
+End Sub
+
+
+Private Sub CommandButton1_Click()
+On Error Resume Next
+ActiveWorkbook.FollowHyperlink Address:="https://www.linkedin.com/in/ay%C5%9Fe-talasl%C4%B1-047a341b9/"
+End Sub
+
+Private Sub CommandButton10_Click()
+Unload Me
+anasayfaa.Show
+End Sub
+
+Private Sub CommandButton2_Click()
+On Error Resume Next
+ActiveWorkbook.FollowHyperlink Address:="https://www.linkedin.com/in/hatice-esra-%C3%B6zay-96b86b1bb/"
+End Sub
+
+Private Sub CommandButton3_Click()
+On Error Resume Next
+ActiveWorkbook.FollowHyperlink Address:="https://www.linkedin.com/in/%C5%9Feymanur-demirta%C5%9F-0868741bb/"
+End Sub
+
+Private Sub CommandButton4_Click()
+On Error Resume Next
+ActiveWorkbook.FollowHyperlink Address:="https://www.linkedin.com/in/zehra-arman-94323b18a/"
+End Sub
+
+Private Sub CommandButton5_Click()
+On Error Resume Next
+ActiveWorkbook.FollowHyperlink Address:="https://avesis.omu.edu.tr/sermin.elevli"
+End Sub
+
+Private Sub CommandButton6_Click()
+On Error Resume Next
+ActiveWorkbook.FollowHyperlink Address:="https://avesis.omu.edu.tr/buse.dagidir/egitim"
+End Sub
+
+
+Private Sub CommandButton8_Click()
+Unload Me
+anasayfaa.Show
+End Sub
+
+Private Sub CommandButton1_Click()
+'BURADA BOŞ OLAN ALANLAR DOLDURULMASI ZORUNLU KILINMIŞTIR VE ÇIKIŞ YAPILDIĞINDA STOKTAKİ MİKTAR YENİDEN SİPARİŞ VERME NOKTASININ ALTINDA İSE UYARI VERMEKTEDİR. VE ÇIKIŞ SAYFASINA GEREKLİ BİLGİLER GİRİLMEKTEDİR.
+Dim a As Integer
+Dim yenidensip As Long
+Dim stok As Long
+a = Sayfa4.Range("a" & Rows.count).End(xlUp).Row
+If TextBox1.Text = "" Then
+MsgBox " Lütfen boş alanları doldurunuz. ", vbCritical, "UYARI"
+ElseIf ComboBox5.Text = "" Then
+MsgBox " Lütfen boş alanları doldurunuz. ", vbCritical, "UYARI"
+ElseIf TextBox3.Text = "" Then
+MsgBox " Lütfen boş alanları doldurunuz. ", vbCritical, "UYARI"
+'ElseIf ComboBox4.Text = "" Then
+'MsgBox " Lütfen boş alanları doldurunuz. ", vbCritical, "UYARI"
+ElseIf TextBox5.Text = "" Then
+MsgBox " Lütfen boş alanları doldurunuz. ", vbCritical, "UYARI"
+ElseIf TextBox6.Text = "" Then
+MsgBox " Lütfen boş alanları doldurunuz. ", vbCritical, "UYARI"
+ElseIf TextBox7.Text = "" Then
+MsgBox " Lütfen boş alanları doldurunuz. ", vbCritical, "UYARI"
+ElseIf ComboBox1.Text = "" Then
+MsgBox " Lütfen boş alanları doldurunuz. ", vbCritical, "UYARI"
+ElseIf ComboBox2.Text = "" Then
+MsgBox " Lütfen boş alanları doldurunuz. ", vbCritical, "UYARI"
+ElseIf ComboBox3.Text = "" Then
+MsgBox " Lütfen boş alanları doldurunuz. ", vbCritical, "UYARI"
+ElseIf TextBox7.Text = "" Then
+MsgBox " Lütfen boş alanları doldurunuz. ", vbCritical, "UYARI"
+ElseIf Not IsNumeric(TextBox3.value) Then
+MsgBox "Girilen değer sayı değil", vbCritical, "UYARI"
+Else
+Sayfa4.Cells(a + 1, 1) = TextBox1.Text
+Sayfa4.Cells(a + 1, 2) = ComboBox5.Text
+Sayfa4.Cells(a + 1, 3) = TextBox3.Text
+Sayfa4.Cells(a + 1, 4) = ComboBox1.Text
+Sayfa4.Cells(a + 1, 5) = ComboBox2.Text
+Sayfa4.Cells(a + 1, 6) = ComboBox3.Text
+Sayfa4.Cells(a + 1, 7) = dpFrom.value
+Sayfa4.Cells(a + 1, 8) = TextBox5.Text
+Sayfa4.Cells(a + 1, 9) = TextBox6.Text
+Sayfa4.Cells(a + 1, 10) = TextBox7.Text
+Sayfa4.Cells(a + 1, 11) = TextBox9.Text
+Sayfa4.Cells(a + 1, 12) = TextBox10.Text
+TextBox5.Text = Sayfa1.Cells(1, 2)
+stok = Application.WorksheetFunction.VLookup(ComboBox5.value, Sheets("STOK").Range("A:B"), 2, 0)
+yenidensip = Application.WorksheetFunction.VLookup(ComboBox5.value, Sheets("YARIMAMÜLLERİN AYLARA GÖRE SM").Range("C:AZ"), 27, 0)
+If stok < yenidensip Then
+    MsgBox "Stok seviyeniz, yeniden sipariş noktasının altında. Stok: " & stok & Chr(10) & "Yeniden Sipariş Noktası: " & yenidensip
+End If
+MsgBox " İşleminiz başarıyla gerçekleştirilmiştir. "
+End If
+'stok = Application.WorksheetFunction.VLookup(ComboBox5.value, Sheets("STOK").Range("A:B"), 2, 0)
+'yenidensip = Application.WorksheetFunction.VLookup(ComboBox5.value, Sheets("YARIMAMÜLLERİN AYLARA GÖRE SM").Range("C:Z"), 26, 0)
+TextBox1.Text = TextBox1.Text + 1
+ComboBox5.Text = ""
+TextBox3.Text = ""
+ComboBox1.Text = ""
+ComboBox4.Text = ""
+TextBox5.Text = ""
+ComboBox2.Text = ""
+TextBox6.Text = ""
+TextBox7.Text = ""
+TextBox9.Text = ""
+TextBox10.Text = ""
+ComboBox3.Text = ""
+'If stok < yenidensip Then
+'    MsgBox "Stok seviyeniz, yeniden sipariş noktasının altında. Stok: " & stok & "Yeniden Sipariş Noktası: " & yenidensip
+'End If
+End Sub
+
+
+Private Sub CommandButton10_Click()
+cikisbilgi.Show
+End Sub
+
+Private Sub CommandButton8_Click()
+Unload Me
+anasayfaa.Show
+End Sub
+
+Private Sub CommandButton9_Click()
+Unload Me
+GIRISCIKIS.Show
+End Sub
+
+
+Private Sub UserForm_Initialize()
+'BURADA COMBOBOXLARA LİSTELENECEK VERİLER BULUNMAKTADIR
+ComboBox1.List = Array("KG", "METRE", "ADET")
+ComboBox2.List = Array("Mal Kabul Depo", "Ticari Depo", "Hava Grubu Koltukaltı Depo", "Sıvı Grubu Koltukaltı Depo", "Endüstriyel Koltukaltı Depo", "Kabin Koltukaltı Depo", "Yeni Nesil Koltukaltı Depo", "Hammadde Kağıt Depo", "Hammadde Sac,Çelik vb Depo", "Hammadde Kimyasal Depo", "Hava Grubu Yarımamül Depo", "Sıvı Grubu Yarımamül Depo", "Kabin Yarımamül Depo", "Yeni Nesil Yarımamül Depo", "Yardımcı Malzeme Depo", "Sarf Malzeme Depo", "Kalite Kontrol Red Depo", "Sevkiyat Depo", "Konsinye Depo-1", "Konsinye Depo-2", "Diğer")
+ComboBox3.List = Array("Mal Kabul Depo", "Ticari Depo", "Hava Grubu Koltukaltı Depo", "Sıvı Grubu Koltukaltı Depo", "Endüstriyel Koltukaltı Depo", "Kabin Koltukaltı Depo", "Yeni Nesil Koltukaltı Depo", "Hammadde Kağıt Depo", "Hammadde Sac,Çelik vb Depo", "Hammadde Kimyasal Depo", "Hava Grubu Yarımamül Depo", "Sıvı Grubu Yarımamül Depo", "Kabin Yarımamül Depo", "Yeni Nesil Yarımamül Depo", "Yardımcı Malzeme Depo", "Sarf Malzeme Depo", "Kalite Kontrol Red Depo", "Sevkiyat Depo", "Konsinye Depo-1", "Konsinye Depo-2", "Diğer")
+Dim a As Integer
+a = Sayfa5.Range("AI" & Rows.count).End(xlUp).Row
+ComboBox5.RowSource = "'VERİLER'!AI2:AI" & a
+ Set dpFrom = New DateTimePicker
+        
+    With dpFrom
+        
+        .Add Me.ComboBox4
+        .Create Me, "DD/MM/YYYY"
+    
+    End With
+End Sub
+
+
+Private Sub UserForm_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    Call moverForm(Me, Me, Button)
+End Sub
+
+Private Sub CommandButton1_Click()
+'BURADA SEÇİLEN YARIMAMÜLÜN İSTENİLEN GÜVEN ARALIĞINA GÖRE HESAPLAMALARI YAPILMIŞTIR. DÜŞEYARA FORMÜLÜ İLE ÇAĞIRMAKTADIR.
+If YARIMAMULKOD = "101035" Then
+YARIMAMULKOD = "101.035"
+End If
+If DOKSAN = False And DOKSANBES = False And DOKSANDOKUZ = False Then
+MsgBox "Lütfen hesaplama yapılacak güven aralığını seçiniz.", vbCritical, "UYARI"
+ElseIf YARIMAMULKOD = "" Then
+MsgBox "Lütfen hesaplama yapılacak yarı mamul kodunu seçiniz.", vbCritical, "UYARI"
+Else
+sonsatır = Sheets("EMNİYET STOĞU & YENİDEN SİPARİŞ").Cells(Rows.count, 1).End(xlUp).Row + 1
+Sheets("EMNİYET STOĞU & YENİDEN SİPARİŞ").Range("A" & sonsatır) = YARIMAMULKOD
+Sheets("EMNİYET STOĞU & YENİDEN SİPARİŞ").Range("B" & sonsatır) = Application.WorksheetFunction.VLookup(YARIMAMULKOD, Sheets("YARIMAMÜLLERİN AYLARA GÖRE SM").Range("C:AD"), 21, 0)
+Sheets("EMNİYET STOĞU & YENİDEN SİPARİŞ").Range("C" & sonsatır) = Application.WorksheetFunction.VLookup(YARIMAMULKOD, Sheets("YARIMAMÜLLERİN AYLARA GÖRE SM").Range("C:AD"), 22, 0)
+
+      If DOKSAN = True Then
+      Sheets("EMNİYET STOĞU & YENİDEN SİPARİŞ").Range("D" & sonsatır) = "%90"
+      Sheets("EMNİYET STOĞU & YENİDEN SİPARİŞ").Range("E" & sonsatır) = Application.WorksheetFunction.VLookup(YARIMAMULKOD, Sheets("YARIMAMÜLLERİN AYLARA GÖRE SM").Range("C:AE"), 23, 0)
+      Sheets("EMNİYET STOĞU & YENİDEN SİPARİŞ").Range("F" & sonsatır) = Application.WorksheetFunction.VLookup(YARIMAMULKOD, Sheets("YARIMAMÜLLERİN AYLARA GÖRE SM").Range("C:AE"), 26, 0)
+      'Sheets("EMNİYET STOĞU & YENİDEN SİPARİŞ").Range("G" & sonsatır) = Application.WorksheetFunction.VLookup(YARIMAMULKOD, Sheets("YARIMAMÜLLERİN AYLARA GÖRE SM").Range("C:AE"), 29, 0)
+      ElseIf DOKSANBES = True Then
+      Sheets("EMNİYET STOĞU & YENİDEN SİPARİŞ").Range("D" & sonsatır) = "%95"
+      Sheets("EMNİYET STOĞU & YENİDEN SİPARİŞ").Range("E" & sonsatır) = Application.WorksheetFunction.VLookup(YARIMAMULKOD, Sheets("YARIMAMÜLLERİN AYLARA GÖRE SM").Range("C:AE"), 24, 0)
+      Sheets("EMNİYET STOĞU & YENİDEN SİPARİŞ").Range("F" & sonsatır) = Application.WorksheetFunction.VLookup(YARIMAMULKOD, Sheets("YARIMAMÜLLERİN AYLARA GÖRE SM").Range("C:AE"), 27, 0)
+      'Sheets("EMNİYET STOĞU & YENİDEN SİPARİŞ").Range("G" & sonsatır) = Application.WorksheetFunction.VLookup(YARIMAMULKOD, Sheets("YARIMAMÜLLERİN AYLARA GÖRE SM").Range("C:AE"), 29, 0)
+      ElseIf DOKSANDOKUZ = True Then
+      Sheets("EMNİYET STOĞU & YENİDEN SİPARİŞ").Range("D" & sonsatır) = "%99"
+      Sheets("EMNİYET STOĞU & YENİDEN SİPARİŞ").Range("E" & sonsatır) = Application.WorksheetFunction.VLookup(YARIMAMULKOD, Sheets("YARIMAMÜLLERİN AYLARA GÖRE SM").Range("C:AE"), 25, 0)
+      Sheets("EMNİYET STOĞU & YENİDEN SİPARİŞ").Range("F" & sonsatır) = Application.WorksheetFunction.VLookup(YARIMAMULKOD, Sheets("YARIMAMÜLLERİN AYLARA GÖRE SM").Range("C:AE"), 28, 0)
+      'Sheets("EMNİYET STOĞU & YENİDEN SİPARİŞ").Range("G" & sonsatır) = Application.WorksheetFunction.VLookup(YARIMAMULKOD, Sheets("YARIMAMÜLLERİN AYLARA GÖRE SM").Range("C:AE"), 29, 0)
+      End If
+
+      guvena = Sheets("EMNİYET STOĞU & YENİDEN SİPARİŞ").Range("D" & sonsatır)
+      emniyets = Round(Sheets("EMNİYET STOĞU & YENİDEN SİPARİŞ").Range("E" & sonsatır), 0)
+      yenidensip = Round(Sheets("EMNİYET STOĞU & YENİDEN SİPARİŞ").Range("F" & sonsatır), 0)
+      'ekonomiksip = Round(Sheets("EMNİYET STOĞU & YENİDEN SİPARİŞ").Range("G" & sonsatır), 0)
+      MsgBox "EMNİYET STOĞU & YENİDEN SİPARİŞ NOKTASI (G.A: " & guvena & ")" & Chr(10) & "Emniyet Stoğu: " & emniyets & Chr(10) & "Yeniden Sipariş Noktası: " & yenidensip
+      'Sheets("EMNİYET STOĞU & YENİDEN SİPARİŞ").Select
+      'Range("D2").Select
+      YARIMAMULKOD.Text = ""
+      DOKSAN = False
+      DOKSANBES = False
+      DOKSANDOKUZ = False
+End If
+End Sub
+
+
+Private Sub OptionButton1_Click()
+CommandButton1.Enabled = True
+End Sub
+
+Private Sub OptionButton2_Click()
+CommandButton2.Enabled = True
+End Sub
+
+Private Sub OptionButton3_Click()
+CommandButton3.Enabled = True
+End Sub
+
+Private Sub CommandButton10_Click()
+emniyetbilgi.Show
+End Sub
+
+Private Sub CommandButton8_Click()
+Unload Me
+anasayfaa.Show
+End Sub
+
+Private Sub CommandButton9_Click()
+Unload Me
+anasayfaa.Show
+End Sub
+
+Private Sub CommandButton1_Click()
+'BURADA İSTENİLEN TARİHTE SEÇİLEN YARIMAMÜLÜN GİRİŞ VE ÇIKIŞ HAREKETLERİ LİSTELENMEKTEDİR.
+Dim tarih
+Dim yarımamul_kod As String
+Dim ss_giris As Long, ss_cikis As Long
+Sheets("GİRİŞ ÇIKIŞ").Rows("2:1000").ClearContents
+ss_giris = Sheets("GİRİŞ").Cells(Rows.count, 1).End(xlUp).Row
+ss_cikis = Sheets("ÇIKIŞ").Cells(Rows.count, 1).End(xlUp).Row
+yarımamul_kod = ComboBox6.value
+tarih = dpFrom.value
+For i = 2 To ss_giris
+    If Sheets("GİRİŞ").Range("F" & i).value = tarih Then
+        If Sheets("GİRİŞ").Range("B" & i).value = yarımamul_kod Then
+            Sheets("GİRİŞ ÇIKIŞ").Cells(Rows.count, 1).End(xlUp).Offset(1, 0).value = tarih
+            Sheets("GİRİŞ ÇIKIŞ").Cells(Rows.count, 2).End(xlUp).Offset(1, 0).value = yarımamul_kod
+            Sheets("GİRİŞ ÇIKIŞ").Cells(Rows.count, 3).End(xlUp).Offset(1, 0).value = Sheets("GİRİŞ").Range("C" & i).value
+        End If
+    End If
+Next i
+For i = 2 To ss_cikis
+    If Sheets("ÇIKIŞ").Range("G" & i).value = tarih Then
+        If Sheets("ÇIKIŞ").Range("B" & i).value = yarımamul_kod Then
+            Sheets("GİRİŞ ÇIKIŞ").Cells(Rows.count, 1).End(xlUp).Offset(1, 0).value = tarih
+            Sheets("GİRİŞ ÇIKIŞ").Cells(Rows.count, 2).End(xlUp).Offset(1, 0).value = yarımamul_kod
+            Sheets("GİRİŞ ÇIKIŞ").Cells(Rows.count, 2).End(xlUp).Offset(0, 2).value = Sheets("ÇIKIŞ").Range("C" & i).value
+        End If
+    End If
+Next i
+ListBox2.RowSource = "'GİRİŞ ÇIKIŞ'!A2:D100"
+End Sub
+
+Private Sub CommandButton10_Click()
+Unload Me
+RAPORLAMA.Show
+End Sub
+
+Private Sub CommandButton8_Click()
+Unload Me
+anasayfaa.Show
+End Sub
+
+Private Sub UserForm_Initialize()
+'BURADA COMBOBOXIN VERİLERİ LİSTELENMİŞTİR VE TAKVİM EKLENMİŞTİR
+Dim a As Integer
+a = Sayfa5.Range("AI" & Rows.count).End(xlUp).Row
+ComboBox6.RowSource = "'VERİLER'!AI2:AI185"
+Set dpFrom = New DateTimePicker
+        
+    With dpFrom
+        
+        .Add Me.ComboBox7
+        .Create Me, "DD/MM/YYYY"
+        
+    End With    
+End Sub
+
+    
+Private Sub UserForm_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    Call moverForm(Me, Me, Button)
+End Sub
+
+Private Sub CommandButton1_Click()
+'BURADA GEREKLİ ALANLARIN DOLDURULMASI ZORUNLU KILINMIŞTIR VE GİRİŞ YAPILAN MİKTARDAKİ YARI MAMULLERİN GİRİŞİ YAPILMAKTADIR EĞER YARIMAMÜLÜN STOKTAKİ DURUMU YENİDEN SİPARİŞ VERME NOKTASININ ÜZERİNDE İSE YEŞİLE, EMNİYET STOĞU İLE YENİDEN SİPARİŞ VERME NOKTASI ARASINDA İSE SARIYA, EMNİYET STOĞUNUN ALTINDA İSE KIRMIZIYA, YENİ YARIMAMÜL GİRİŞİ İSE MAVİYE BOYAMASI İŞLEVİ YAPILMAKTADIR.
+Dim a As Integer
+a = Sayfa3.Range("B" & Rows.count).End(xlUp).Row
+If TextBox1.Text = "" Then
+MsgBox " Lütfen boş alanları doldurunuz. ", vbCritical, "UYARI"
+ElseIf ComboBox5.Text = "" Then
+MsgBox " Lütfen boş alanları doldurunuz. ", vbCritical, "UYARI"
+ElseIf TextBox3.Text = "" Then
+MsgBox " Lütfen boş alanları doldurunuz. ", vbCritical, "UYARI"
+ElseIf TextBox4.Text = "" Then
+MsgBox " Lütfen boş alanları doldurunuz. ", vbCritical, "UYARI"
+'ElseIf ComboBox4.Text = "" Then
+'MsgBox " Lütfen boş alanları doldurunuz. ", vbCritical, "UYARI"
+ElseIf TextBox6.Text = "" Then
+MsgBox " Lütfen boş alanları doldurunuz. ", vbCritical, "UYARI"
+ElseIf TextBox8.Text = "" Then
+MsgBox " Lütfen boş alanları doldurunuz. ", vbCritical, "UYARI"
+ElseIf ComboBox1.Text = "" Then
+MsgBox " Lütfen boş alanları doldurunuz. ", vbCritical, "UYARI"
+ElseIf ComboBox2.Text = "" Then
+MsgBox " Lütfen boş alanları doldurunuz. ", vbCritical, "UYARI"
+ElseIf TextBox9.Text = "" Then
+MsgBox " Lütfen boş alanları doldurunuz. ", vbCritical, "UYARI"
+ElseIf Not IsNumeric(TextBox3.value) Then
+MsgBox "Girilen değer sayı değil", vbCritical, "UYARI"
+Else
+Sayfa3.Cells(a + 1, 1) = TextBox1.Text
+Sayfa3.Cells(a + 1, 2) = ComboBox5.Text
+Sayfa3.Cells(a + 1, 3) = TextBox3.Text
+Sayfa3.Cells(a + 1, 4) = ComboBox1.Text
+Sayfa3.Cells(a + 1, 5) = TextBox4.Text
+Sayfa3.Cells(a + 1, 6) = dpFrom.value
+'Sayfa3.Cells(a + 1, 6) = ComboBox4.Text
+Sayfa3.Cells(a + 1, 7) = ComboBox2.Text
+Sayfa3.Cells(a + 1, 8) = TextBox6.Text
+Sayfa3.Cells(a + 1, 9) = ComboBox3.Text
+Sayfa3.Cells(a + 1, 10) = TextBox8.Text
+Sayfa3.Cells(a + 1, 11) = TextBox9.Text
+Sayfa3.Cells(a + 1, 12) = TextBox10.Text
+MsgBox " İşleminiz başarıyla gerçekleştirilmiştir. "
+    'c = Sheet3.Cells(Rows.count, 1).End(xlUp).Row
+    For i = 2 To 186
+    If Sheet3.Cells(i, 2) > Application.WorksheetFunction.VLookup(Sheet3.Cells(i, 1), Sayfa7.Range("c:ac"), 27, 0) Then
+    Sheet3.Cells(i, 2).Interior.Color = vbGreen
+    ElseIf Sheet3.Cells(i, 2) < Application.WorksheetFunction.VLookup(Sheet3.Cells(i, 1), Sayfa7.Range("c:ac"), 27, 0) And Sheet3.Cells(i, 2) > Application.WorksheetFunction.VLookup(Sheet3.Cells(i, 1), Sayfa7.Range("c:ac"), 24, 0) Then
+    Sheet3.Cells(i, 2).Interior.Color = vbYellow
+    Else
+    Sheet3.Cells(i, 2).Interior.Color = vbRed
+    End If
+    Next i
+    c = Sheet3.Cells(Rows.count, 1).End(xlUp).Row
+    For X = 187 To c
+    Sheet3.Cells(X, 2).Interior.Color = vbBlue
+    Next X
+TextBox1.Text = TextBox1.Text + 1
+ComboBox5 = ""
+TextBox3.Text = ""
+ComboBox1.Text = ""
+TextBox4.Text = Sayfa1.Cells(1, 2)
+ComboBox4 = ""
+ComboBox2.Text = ""
+TextBox6.Text = ""
+ComboBox3.Text = ""
+TextBox8.Text = ""
+TextBox9.Text = ""
+TextBox10.Text = ""
+'Application.DisplayAlerts = False
+End If
+End Sub
+
+
+Private Sub CommandButton10_Click()
+Unload Me
+GIRISCIKIS.Show
+End Sub
+
+Private Sub CommandButton11_Click()
+girisbilgi.Show
+End Sub
+
+Private Sub CommandButton9_Click()
+Unload Me
+anasayfaa.Show
+End Sub
+
+
+Private Sub ComboBox5_Change()
+Dim a As Integer
+a = Sayfa4.Range("A" & Rows.count).End(xlUp).Row
+If ComboBox5.value = False Then
+MsgBox " Lütfen boş alanları doldurunuz. ", vbCritical, "UYARI"
+End If
+End Sub
+
+
+Private Sub UserForm_Initialize()
+'BURADA COMBOBOXLARA VERİLER LİSTELENMEKTEDİR.
+ComboBox1.List = Array("KG", "METRE", "ADET")
+ComboBox2.List = Array("OGT", "MC FİLTRE", "DİĞER")
+ComboBox3.List = Array("Mal Kabul Depo", "Ticari Depo", "Hava Grubu Koltukaltı Depo", "Sıvı Grubu Koltukaltı Depo", "Endüstriyel Koltukaltı Depo", "Kabin Koltukaltı Depo", "Yeni Nesil Koltukaltı Depo", "Hammadde Kağıt Depo", "Hammadde Sac,Çelik vb Depo", "Hammadde Kimyasal Depo", "Hava Grubu Yarımamül Depo", "Sıvı Grubu Yarımamül Depo", "Kabin Yarımamül Depo", "Yeni Nesil Yarımamül Depo", "Yardımcı Malzeme Depo", "Sarf Malzeme Depo", "Kalite Kontrol Red Depo", "Sevkiyat Depo", "Konsinye Depo-1", "Konsinye Depo-2", "Diğer")
+Dim a As Integer
+a = Sayfa5.Range("AI" & Rows.count).End(xlUp).Row
+ComboBox5.RowSource = "'VERİLER'!AI2:AI" & a
+
+    Set dpFrom = New DateTimePicker
+        
+    With dpFrom
+        
+        .Add Me.ComboBox4
+        .Create Me, "DD/MM/YYYY"
+    
+    End With
+End Sub
+
+Private Sub UserForm_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    Call moverForm(Me, Me, Button)
+End Sub
+
+Private Sub CommandButton1_Click()
+Unload Me
+Dim a As Integer
+a = Sayfa3.Range("A" & Rows.count).End(xlUp).Row
+If a = 1 Then
+GIRIS.TextBox1.Text = "1"
+Else
+GIRIS.TextBox1.Text = a
+End If
+GIRIS.TextBox4.Text = Sayfa1.Cells(1, 2)
+GIRIS.Show
+End Sub
+
+Private Sub CommandButton10_Click()
+giriscikisbilgi.Show
+End Sub
+
+Private Sub CommandButton2_Click()
+Unload Me
+Dim a As Integer
+a = Sayfa4.Range("A" & Rows.count).End(xlUp).Row
+If a = 1 Then
+CIKIS.TextBox1.Text = "1"
+Else
+CIKIS.TextBox1.Text = a
+End If
+CIKIS.TextBox5.Text = Sayfa1.Cells(1, 2)
+CIKIS.Show
+End Sub
+
+
+Private Sub CommandButton8_Click()
+Unload Me
+anasayfaa.Show
+End Sub
+
+Private Sub CommandButton9_Click()
+Unload Me
+anasayfaa.Show
+End Sub
+
+Private Sub CommandButton10_Click()
+şifrebilgi.Show
+End Sub
+
+Private Sub CommandButton9_Click()
+'BURADA KULLANICI ADI VE ŞİFRESİ İLE GİRİŞİ YAPILMAKTADIR.
+If TextBox9 = "END415" And TextBox10 = "12345" Or TextBox9 = "OMÜEND" And TextBox10 = "67890" Then
+Unload Me
+Sayfa1.Cells(1, 2) = TextBox9.Text
+anasayfaa.Show
+Else
+MsgBox "Hatalı şifre girdiniz.", vbCritical, "UYARI"
+End If
+End Sub
+
+Private Sub CommandButton1_Click()
+Unload Me
+STOKMİKTARİ.Show
+End Sub
+
+Private Sub CommandButton10_Click()
+raporlamabilgi.Show
+End Sub
+
+Private Sub CommandButton2_Click()
+Unload Me
+ABC.Show
+End Sub
+Private Sub CommandButton4_Click()
+Unload Me
+filtrelemee.Show
+End Sub
+
+
+Private Sub CommandButton8_Click()
+Unload Me
+anasayfaa.Show
+End Sub
+
+Private Sub CommandButton9_Click()
+Unload Me
+anasayfaa.Show
+End Sub
+
+Private Sub CommandButton1_Click()
+'BURADA İSTENİLEN YARI MAMULÜN STOKTA KAÇ ADET BULUNDUĞU GÖSTERİLMEKTEDİR.
+If YARIMAMUL.Text = "" Then
+MsgBox "Lütfen stok durumunu öğrenmek istediğiniz yarı mamulü seçiniz.", vbCritical, "UYARI"
+Else
+Dim sınıf As String
+'Dim yuzde1
+'Dim yuzde2
+sınıf = Application.WorksheetFunction.VLookup(YARIMAMUL, Sheets("STOK").Range("A:B"), 2, 0)
+MsgBox "Stokta " & YARIMAMUL & " yarı mamulünden " & sınıf & " adet vardır."
+End If
+End Sub
+
+Private Sub CommandButton10_Click()
+stokbilgi.Show
+End Sub
+
+Private Sub CommandButton8_Click()
+Unload Me
+anasayfaa.Show
+End Sub
+
+Private Sub UserForm_Initialize()
+Dim a As Integer
+a = Sayfa5.Range("AI" & Rows.count).End(xlUp).Row
+YARIMAMUL.RowSource = "'VERİLER'!AI2:AI" & a
+End Sub
+
+Private Sub CommandButton9_Click()
+Unload Me
+RAPORLAMA.Show
+End Sub
+
+Private Sub CommandButton1_Click()
+'BURADA İSTENİLEN ÜRÜNÜN YARIMAMÜLLERİ LİSTELENMEKTEDİR.
+If ComboBox1.Text = "" Then
+MsgBox " Lütfen yarı mamullerini listelemek istediğiniz ürünü seçiniz. ", vbCritical, "UYARI"
+Else
+    If ComboBox1.Text = "EMF 01" Then
+    ListBox1.RowSource = "VERİLER!AQ2:AR8"
+    ElseIf ComboBox1.Text = "EYF 01" Then
+    ListBox1.RowSource = "VERİLER!AQ9:AR12"
+    ElseIf ComboBox1.Text = "SMK 01" Then
+    ListBox1.RowSource = "VERİLER!AQ194:AR203"
+    ElseIf ComboBox1.Text = "HKF 01" Then
+    ListBox1.RowSource = "VERİLER!AQ13:AR25"
+    ElseIf ComboBox1.Text = "SYF 01" Then
+    ListBox1.RowSource = "VERİLER!AQ204:AR213"
+    ElseIf ComboBox1.Text = "MHF 102" Then
+    ListBox1.RowSource = "VERİLER!AQ26:AR31"
+    ElseIf ComboBox1.Text = "MHF 108" Then
+    ListBox1.RowSource = "VERİLER!AQ32:AR37"
+    ElseIf ComboBox1.Text = "MHF 109" Then
+    ListBox1.RowSource = "VERİLER!AQ38:AR43"
+    ElseIf ComboBox1.Text = "MHF 110" Then
+    ListBox1.RowSource = "VERİLER!AQ44:AR49"
+    ElseIf ComboBox1.Text = "MHF 111" Then
+    ListBox1.RowSource = "VERİLER!AQ50:AR55"
+    ElseIf ComboBox1.Text = "MHF 113" Then
+    ListBox1.RowSource = "VERİLER!AQ56:AR61"
+    ElseIf ComboBox1.Text = "MHF 116" Then
+    ListBox1.RowSource = "VERİLER!AQ62:AR71"
+    ElseIf ComboBox1.Text = "MHF 118" Then
+    ListBox1.RowSource = "VERİLER!AQ72:AR79"
+    ElseIf ComboBox1.Text = "MHF 120" Then
+    ListBox1.RowSource = "VERİLER!AQ80:AR85"
+    ElseIf ComboBox1.Text = "MHF 124" Then
+    ListBox1.RowSource = "VERİLER!AQ86:AR92"
+    ElseIf ComboBox1.Text = "MHF 125" Then
+    ListBox1.RowSource = "VERİLER!AQ93:AR100"
+    ElseIf ComboBox1.Text = "MHF 130" Then
+    ListBox1.RowSource = "VERİLER!AQ101:AR106"
+    ElseIf ComboBox1.Text = "MHF 132" Then
+    ListBox1.RowSource = "VERİLER!AQ107:AR111"
+    ElseIf ComboBox1.Text = "MHF 133" Then
+    ListBox1.RowSource = "VERİLER!AQ112:AR117"
+    ElseIf ComboBox1.Text = "MHF 134" Then
+    ListBox1.RowSource = "VERİLER!AQ118:AR123"
+    ElseIf ComboBox1.Text = "MHF 135" Then
+    ListBox1.RowSource = "VERİLER!AQ124:AR128"
+    ElseIf ComboBox1.Text = "MHF 136" Then
+    ListBox1.RowSource = "VERİLER!AQ129:AR134"
+    ElseIf ComboBox1.Text = "MHF 137" Then
+    ListBox1.RowSource = "VERİLER!AQ135:AR140"
+    ElseIf ComboBox1.Text = "MHF 164" Then
+    ListBox1.RowSource = "VERİLER!AQ141:AR146"
+    ElseIf ComboBox1.Text = "MHF 165" Then
+    ListBox1.RowSource = "VERİLER!AQ147:AR151"
+    ElseIf ComboBox1.Text = "MHF 168" Then
+    ListBox1.RowSource = "VERİLER!AQ152:AR157"
+    ElseIf ComboBox1.Text = "MHF 170" Then
+    ListBox1.RowSource = "VERİLER!AQ158:AR163"
+    ElseIf ComboBox1.Text = "MHF 263" Then
+    ListBox1.RowSource = "VERİLER!AQ164:AR170"
+    ElseIf ComboBox1.Text = "MHF 481" Then
+    ListBox1.RowSource = "VERİLER!AQ171:AR182"
+    ElseIf ComboBox1.Text = "MHF 513" Then
+    ListBox1.RowSource = "VERİLER!AQ183:AR193"
+    End If
+End If
+End Sub
+
+Private Sub CommandButton10_Click()
+ürünbilgikutusu.Show
+End Sub
+
+Private Sub CommandButton8_Click()
+Unload Me
+anasayfaa.Show
+End Sub
+
+Private Sub CommandButton9_Click()
+Unload Me
+anasayfaa.Show
+End Sub
+
+Private Sub ComboBox5_Change()
+If ComboBox5.value = "EMF 01" Then
+ComboBox6.RowSource = "'VERİLER'!D2:D8"
+ElseIf ComboBox5.value = "EYF 01" Then
+ComboBox6.RowSource = "'VERİLER'!E2:E" & b
+ComboBox6.RowSource = "'VERİLER'!E2:E5"
+ElseIf ComboBox5.value = "SMK 01" Then
+ComboBox6.RowSource = "'VERİLER'!F2:F11"
+ElseIf ComboBox5.value = "HKF 01" Then
+ComboBox6.RowSource = "'VERİLER'!G2:G14"
+ElseIf ComboBox5.value = "SYF 01" Then
+ComboBox6.RowSource = "'VERİLER'!H2:H11"
+ElseIf ComboBox5.value = "MHF 102" Then
+ComboBox6.RowSource = "'VERİLER'!I2:I7"
+ElseIf ComboBox5.value = "MHF 108" Then
+ComboBox6.RowSource = "'VERİLER'!J2:J7"
+ElseIf ComboBox5.value = "MHF 109" Then
+ComboBox6.RowSource = "'VERİLER'!K2:K7"
+ElseIf ComboBox5.value = "MHF 110" Then
+ComboBox6.RowSource = "'VERİLER'!L2:L7"
+ElseIf ComboBox5.value = "MHF 111" Then
+ComboBox6.RowSource = "'VERİLER'!M2:M7"
+ElseIf ComboBox5.value = "MHF 113" Then
+ComboBox6.RowSource = "'VERİLER'!N2:N7"
+ElseIf ComboBox5.value = "MHF 116" Then
+ComboBox6.RowSource = "'VERİLER'!O2:O11"
+ElseIf ComboBox5.value = "MHF 118" Then
+ComboBox6.RowSource = "'VERİLER'!P2:P9"
+ElseIf ComboBox5.value = "MHF 120" Then
+ComboBox6.RowSource = "'VERİLER'!Q2:Q7"
+ElseIf ComboBox5.value = "MHF 124" Then
+ComboBox6.RowSource = "'VERİLER'!R2:R8"
+ElseIf ComboBox5.value = "MHF 125" Then
+ComboBox6.RowSource = "'VERİLER'!S2:S9"
+ElseIf ComboBox5.value = "MHF 130" Then
+ComboBox6.RowSource = "'VERİLER'!T2:T7"
+ElseIf ComboBox5.value = "MHF 132" Then
+ComboBox6.RowSource = "'VERİLER'!U2:U6"
+ElseIf ComboBox5.value = "MHF 133" Then
+ComboBox6.RowSource = "'VERİLER'!V2:V7"
+ElseIf ComboBox5.value = "MHF 134" Then
+ComboBox6.RowSource = "'VERİLER'!W2:W7"
+ElseIf ComboBox5.value = "MHF 135" Then
+ComboBox6.RowSource = "'VERİLER'!X2:X6"
+ElseIf ComboBox5.value = "MHF 136" Then
+ComboBox6.RowSource = "'VERİLER'!Y2:Y7"
+ElseIf ComboBox5.value = "MHF 137" Then
+ComboBox6.RowSource = "'VERİLER'!Z2:Z7"
+ElseIf ComboBox5.value = "MHF 164" Then
+ComboBox6.RowSource = "'VERİLER'!AA2:AA7"
+ElseIf ComboBox5.value = "MHF 165" Then
+ComboBox6.RowSource = "'VERİLER'!AB2:AB6"
+ElseIf ComboBox5.value = "MHF 168" Then
+ComboBox6.RowSource = "'VERİLER'!AC2:AC7"
+ElseIf ComboBox5.value = "MHF 170" Then
+ComboBox6.RowSource = "'VERİLER'!AD2:AD7"
+ElseIf ComboBox5.value = "MHF 263" Then
+ComboBox6.RowSource = "'VERİLER'!AE2:AE8"
+ElseIf ComboBox5.value = "MHF 481" Then
+ComboBox6.RowSource = "'VERİLER'!AF2:AF13"
+ElseIf ComboBox5.value = "MHF 513" Then
+ComboBox6.RowSource = "'VERİLER'!AG2:AG12"
+End If
+End Sub
+
+Private Sub CommandButton1_Click()
+'BURADA YENİ EKLENECEK OLAN YARIMAMÜLÜN KAYDI YAPILMAKTADIR. GEREKLİ ALANLARIN DOLDURULMASI ZORUNLU KILINMIŞTIR.
+Dim a As Integer
+a = Sayfa2.Range("A" & Rows.count).End(xlUp).Row
+Dim b As Integer
+b = Sayfa5.Range("AH" & Rows.count).End(xlUp).Row
+Dim c As Integer
+c = Sayfa5.Range("AI" & Rows.count).End(xlUp).Row
+Dim d As Integer
+d = Sheet3.Range("A" & Rows.count).End(xlUp).Row
+If ComboBox4.Text = "" Then
+MsgBox " Lütfen boş alanları doldurunuz. ", vbCritical, "UYARI"
+ElseIf TextBox8.Text = "" Then
+MsgBox " Lütfen boş alanları doldurunuz. ", vbCritical, "UYARI"
+ElseIf TextBox9.Text = "" Then
+MsgBox " Lütfen boş alanları doldurunuz. ", vbCritical, "UYARI"
+ElseIf TextBox3.Text = "" Then
+MsgBox " Lütfen boş alanları doldurunuz. ", vbCritical, "UYARI"
+ElseIf TextBox5.Text = "" Then
+MsgBox " Lütfen boş alanları doldurunuz. ", vbCritical, "UYARI"
+ElseIf ComboBox2.Text = "" Then
+MsgBox " Lütfen boş alanları doldurunuz. ", vbCritical, "UYARI"
+ElseIf TextBox6.Text = "" Then
+MsgBox " Lütfen boş alanları doldurunuz. ", vbCritical, "UYARI"
+ElseIf ComboBox3.Text = "" Then
+MsgBox " Lütfen boş alanları doldurunuz. ", vbCritical, "UYARI"
+ElseIf TextBox7.Text = "" Then
+MsgBox " Lütfen boş alanları doldurunuz. ", vbCritical, "UYARI"
+ElseIf Not IsNumeric(TextBox6.value) Then
+MsgBox "Ürün başına adet için girilen değer sayı değil", vbCritical, "UYARI"
+ElseIf Not IsNumeric(TextBox7.value) Then
+MsgBox "Termin süresi için girilen değer sayı değil", vbCritical, "UYARI"
+ElseIf TextBox7.value < 1 Or TextBox7.value > 30 Then
+MsgBox "Lütfen termin süresi için 1 ile 30 arasında bir sayı giriniz.", vbCritical, "UYARI"
+ElseIf Not IsNumeric(TextBox3.value) Then
+MsgBox "Yarı mamul birim fiyatı için girilen değer sayı değil", vbCritical, "UYARI"
+Else
+Sayfa2.Cells(a + 1, 1) = ComboBox4.Text
+Sayfa2.Cells(a + 1, 2) = TextBox8.Text
+Sayfa2.Cells(a + 1, 3) = TextBox9.Text
+Sayfa2.Cells(a + 1, 4) = TextBox3.Text
+Sayfa2.Cells(a + 1, 5) = TextBox5.Text
+Sayfa2.Cells(a + 1, 6) = ComboBox2.Text
+Sayfa2.Cells(a + 1, 7) = TextBox6.Text
+Sayfa2.Cells(a + 1, 8) = ComboBox3.Text
+Sayfa2.Cells(a + 1, 9) = TextBox7.Text
+Sayfa5.Cells(c + 1, 35) = TextBox9.Text
+Sayfa5.Cells(b + 1, 34) = TextBox8.Text
+Sheet3.Cells(d + 1, 1) = TextBox9.Text
+MsgBox " İşleminiz başarıyla gerçekleştirilmiştir. "
+ComboBox4.Text = ""
+TextBox8.Text = ""
+TextBox9.Text = ""
+TextBox3.Text = ""
+TextBox5.Text = ""
+ComboBox2.Text = ""
+TextBox6.Text = ""
+ComboBox3.Text = ""
+TextBox7.Text = ""
+End If
+End Sub
+
+Private Sub CommandButton2_Click()
+Unload Me
+End Sub
+
+Private Sub CommandButton10_Click()
+yarımamulbilgi.Show
+End Sub
+
+Private Sub CommandButton11_Click()
+'anasayfaa.Show
+End Sub
+
+Private Sub CommandButton8_Click()
+Unload Me
+anasayfaa.Show
+End Sub
+
+Private Sub CommandButton9_Click()
+Unload Me
+anasayfaa.Show
+End Sub
+
+
+Private Sub UserForm_Initialize()
+ComboBox4.List = Array("HAVA FİLTRESİ", "YAĞ/YAKIT FİLTRESİ")
+ComboBox2.List = Array("PLASTİK", "SAC", "CONTA")
+ComboBox3.List = Array("MC FİLTRE", "OGT", "DİĞER")
+'If ComboBox4.Value = "HAVA FİLTRESİ" Then
+'ComboBox5.RowSource = "Sayfa5!b2: b26"
+'Else
+'ComboBox5.RowSource = "Sayfa5!c2: c6"
+'End If
+End Sub
+
