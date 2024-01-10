@@ -1,5 +1,5 @@
-# END-STR-M-HEND-SL-TASARIM-DERS-UYGULAMASI
-BİR FİLTRE FABRİKASINDA EXCEL VBA İLE STOK TAKİP UYGULAMASI
+# ENDUSTRI MUHENDISLIGI TASARIM DERSI UYGULAMASI
+BİR FiLTRE FABRiKASINDA EXCEL VBA iLE STOK TAKİP UYGULAMASI
 Üretim planlama ve kontrol süreçleri, firmaları dinamik ve anlık müdahalelere 
 olanak tanıyarak hızlı bir şekilde yönlendirebilme imkanına sahiptir. Kontrol 
 mekanizmaları ve zamanında müdahale, potansiyel büyük zararların önüne geçebilir. Bu 
